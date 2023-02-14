@@ -5,6 +5,14 @@
 ******************************************************************************
 */
 
+struct NodeInfo
+{
+    int mRow;
+    int mCol;
+
+    NodeInfo(int r = 0, int c = 0):mRow(r),mCol(c){}
+};
+
 template<typename T>
 typename std::enable_if<(sizeof(T) == 8)>::type checkParams(T t){
     cout<< typeid(t).name()<<endl;
