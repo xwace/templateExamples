@@ -139,7 +139,7 @@ void recursiveFunc(deque<int> &vec) {
     recursiveFunc(vec);
 }
 
-int main(){
+int main2(){
     printargs(1, 2.5, "test");
     
     //test recursive function
@@ -152,3 +152,64 @@ int main(){
         cout << p << endl;
     }
 }
+
+
+
+
+
+
+/**
+  ******************************************************************************
+  * @author         : oswin
+  * @brief          : 编译期获取类型的索引：编译期根据索引位置查找类型
+  * 用法：cout<< IndexOf<int, double, short, char, int, float>::value<<endl;输出3
+  * using T = At<1, int, double, char>::type; 
+  * cout << typeid(T).name() << endl; //输出double
+  ******************************************************************************
+  */
+  
+template < typename T, typename... List >
+struct IndexOf;
+
+template < typename T, typename Head, typename... Rest >
+struct IndexOf<T, Head, Rest...>
+{
+    enum{ value = IndexOf<T, Rest...>::value+1 };
+};
+
+template < typename T, typename... Rest >
+struct IndexOf<T, T, Rest...>
+{
+    enum{ value = 0 };
+};
+
+template < typename T >
+struct IndexOf<T>
+{
+    enum{value = -1};
+};
+
+
+template<int index, typename... Types>
+struct At;
+
+template<int index, typename First, typename... Types>
+struct At<index, First, Types...>
+{
+    using type = typename At<index - 1, Types...>::type;
+};
+
+template<typename T, typename... Types>
+struct At<0, T, Types...>
+{
+    using type = T;
+};
+
+
+int main(){
+    using T = At<1, int, double, char>::type;
+    cout << typeid(T).name() << endl; //输出double
+    
+    cout<< IndexOf<int, double, short, char, int, float>::value<<endl; //输出3
+}
+
